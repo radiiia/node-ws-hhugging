@@ -6,32 +6,15 @@
     <title>Global Peace - 拒绝战争，拥抱和平</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* --- 1. 基础全局样式 --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
-        }
+        /* --- 全局样式 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #f5f9ff; color: #333; line-height: 1.6; }
+        a { text-decoration: none; }
 
-        :root {
-            --primary: #1565c0;      /* 主蓝色 */
-            --secondary: #0d47a1;    /* 深蓝色 */
-            --accent: #ffca28;       /* 金色 */
-            --light: #f5f9ff;        /* 浅背景 */
-            --white: #ffffff;
-            --text: #333333;
-            --gray: #666666;
-            --header-height: 80px;
-        }
-
-        html { scroll-behavior: smooth; }
-        body { background-color: var(--light); color: var(--text); line-height: 1.6; }
-
-        /* --- 2. 导航栏 --- */
+        /* --- 导航栏 --- */
         header {
-            background: var(--secondary); /* 纯色背景，防止子页面看不清 */
-            height: var(--header-height);
+            background: #0d47a1; /* 深蓝背景 */
+            height: 80px;
             width: 100%;
             position: fixed;
             top: 0;
@@ -39,77 +22,72 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
-        .container { width: 90%; max-width: 1200px; margin: 0 auto; height: 100%; position: relative; }
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; }
         .nav-container { display: flex; justify-content: space-between; align-items: center; height: 100%; }
 
-        .logo { font-size: 1.8rem; font-weight: 700; color: var(--white); display: flex; align-items: center; gap: 10px; text-decoration: none; cursor: pointer; }
-        .logo i { color: var(--accent); }
+        .logo { font-size: 1.8rem; font-weight: bold; color: white; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+        .logo i { color: #ffca28; }
 
-        .desktop-nav { display: flex; list-style: none; gap: 2rem; align-items: center; }
-        .nav-link { color: rgba(255, 255, 255, 0.9); text-decoration: none; font-weight: 500; cursor: pointer; transition: color 0.3s; }
-        .nav-link:hover { color: var(--accent); }
+        .nav-menu { display: flex; list-style: none; gap: 20px; }
+        .nav-item { color: rgba(255,255,255,0.9); cursor: pointer; transition: 0.3s; padding: 10px; }
+        .nav-item:hover { color: #ffca28; }
+        
+        .btn-donate { background: #ffca28; color: #000; padding: 8px 20px; border-radius: 20px; font-weight: bold; }
+        .btn-donate:hover { background: #ffb300; transform: translateY(-2px); }
 
-        /* 导航按钮 */
-        .nav-btn { background-color: var(--accent); color: var(--secondary); padding: 0.6rem 1.5rem; border-radius: 50px; text-decoration: none; font-weight: 700; cursor: pointer; transition: transform 0.2s; }
-        .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        /* --- 页面切换逻辑 --- */
+        /* 默认让所有页面容器有统一的内边距，避开顶部导航栏 */
+        .page-section {
+            padding-top: 100px;
+            padding-bottom: 50px;
+            min-height: 100vh;
+            display: none; /* 默认隐藏所有页面 */
+            animation: fadeIn 0.5s;
+        }
 
-        /* --- 3. 页面切换控制 (核心) --- */
-        /* 默认显示主页，隐藏子页面 */
-        .sub-page { display: none; padding-top: 100px; padding-bottom: 50px; min-height: 80vh; animation: fadeIn 0.5s ease; }
-        #home-page { display: block; } /* 初始显示 */
+        /* 首页默认显示 */
+        #page-home { display: block; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- 4. 主页内容样式 --- */
+        /* --- 首页样式 --- */
         .hero {
             background: linear-gradient(rgba(13, 71, 161, 0.7), rgba(21, 101, 192, 0.6)), url('https://images.unsplash.com/photo-1494751909833-28682a32507e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80');
-            background-size: cover; background-position: center; height: 100vh;
-            display: flex; align-items: center; text-align: center; color: var(--white);
-            margin-top: -80px; padding-top: 80px; /* 修复 header 遮挡 */
+            background-size: cover; background-position: center;
+            height: 80vh; 
+            margin-top: -100px; /* 抵消 padding */
+            padding-top: 100px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; color: white;
         }
-        .hero h1 { font-size: 3.5rem; margin-bottom: 1.5rem; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .hero p { font-size: 1.4rem; margin-bottom: 2.5rem; }
         
-        .section-title { text-align: center; margin: 4rem 0 3rem; }
-        .section-title h2 { font-size: 2.5rem; color: var(--primary); display: inline-block; border-bottom: 4px solid var(--accent); padding-bottom: 10px; }
+        .hero h1 { font-size: 3rem; margin-bottom: 20px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .btn-hero { background: #ffca28; color: black; padding: 15px 30px; border-radius: 30px; font-weight: bold; display: inline-block; cursor: pointer; margin-top: 20px; }
 
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 4rem; }
-        .card { background: var(--white); border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s; }
-        .card:hover { transform: translateY(-10px); }
-        .card img { width: 100%; height: 220px; object-fit: cover; }
-        .card-content { padding: 2rem; }
-        .btn-link { color: var(--primary); font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; margin-top: 1rem; }
+        .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 40px; }
+        .card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); cursor: pointer; transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); }
+        .card img { width: 100%; height: 200px; object-fit: cover; }
+        .card-content { padding: 20px; }
+        .card h3 { color: #0d47a1; margin-bottom: 10px; }
+        .link-text { color: #1565c0; font-weight: bold; margin-top: 10px; display: block; }
 
-        /* --- 5. 子页面特定样式 --- */
-        .page-header { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 2rem; }
-        .page-header h1 { color: var(--secondary); margin-bottom: 0.5rem; }
-        
-        .content-box { background: white; padding: 3rem; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); max-width: 800px; margin: 0 auto; }
+        /* --- 子页面通用 --- */
+        .content-box { background: white; max-width: 800px; margin: 0 auto; padding: 40px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .back-btn { display: inline-block; margin-bottom: 20px; color: #666; cursor: pointer; }
+        .back-btn:hover { color: #1565c0; }
         
         /* 表单样式 */
-        .form-group { margin-bottom: 1.5rem; text-align: left; }
-        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--secondary); }
-        .form-control { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 1rem; }
-        .btn-submit { width: 100%; background: var(--primary); color: white; padding: 12px; border: none; border-radius: 6px; font-size: 1.1rem; cursor: pointer; font-weight: bold; }
-        .btn-submit:hover { background: var(--secondary); }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        .btn-submit { width: 100%; background: #1565c0; color: white; padding: 12px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
 
-        /* 捐赠按钮组 */
-        .donation-options { display: flex; gap: 10px; margin-bottom: 1.5rem; }
-        .donation-btn { flex: 1; padding: 15px; border: 2px solid var(--primary); background: white; color: var(--primary); cursor: pointer; font-weight: bold; border-radius: 6px; }
-        .donation-btn.selected { background: var(--primary); color: white; }
-
-        /* 返回按钮 */
-        .back-btn { display: inline-block; margin-bottom: 20px; color: var(--gray); cursor: pointer; font-size: 0.9rem; }
-        .back-btn:hover { color: var(--primary); }
-
-        /* Footer */
-        footer { background: var(--secondary); color: white; padding: 3rem 0; text-align: center; margin-top: auto; }
-
-        /* Mobile */
+        /* 响应式 */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.2rem; }
-            .grid-3 { grid-template-columns: 1fr; }
-            .desktop-nav { display: none; } /* 简化版移动端，暂不处理复杂的汉堡菜单逻辑，以便专注内容逻辑 */
+            .cards-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2rem; }
+            .nav-menu span { font-size: 14px; }
         }
     </style>
 </head>
@@ -117,294 +95,214 @@
 
     <header>
         <div class="container nav-container">
-            <div class="logo" onclick="showPage('home-page')">
+            <div class="logo" onclick="switchPage('page-home')">
                 <i class="fas fa-dove"></i> Global Peace
             </div>
-            <ul class="desktop-nav">
-                <li><span class="nav-link" onclick="showPage('home-page')">首页</span></li>
-                <li><span class="nav-link" onclick="scrollToSection('initiatives')">项目</span></li>
-                <li><span class="nav-link" onclick="showPage('join-page')">加入我们</span></li>
-                <li><span class="nav-btn" onclick="showPage('donate-page')">立即捐赠</span></li>
-            </ul>
+            <nav>
+                <ul class="nav-menu">
+                    <li><span class="nav-item" onclick="switchPage('page-home')">首页</span></li>
+                    <li><span class="nav-item" onclick="switchPage('page-projects')">核心项目</span></li>
+                    <li><span class="nav-item" onclick="switchPage('page-join')">加入我们</span></li>
+                    <li><span class="nav-item btn-donate" onclick="switchPage('page-donate')">捐赠</span></li>
+                </ul>
+            </nav>
         </div>
     </header>
 
-    <div id="home-page" class="sub-page">
-        
-        <section class="hero">
+    <div id="page-home" class="page-section" style="display: block;"> <div class="hero">
             <div class="container">
-                <h1>让和平的阳光<br>照亮每一个角落</h1>
-                <p>战争不是解决冲突的唯一途径。加入全球 200 万和平卫士，用爱与对话治愈世界。</p>
-                <div style="display:flex; gap:15px; justify-content:center;">
-                    <span class="nav-btn" onclick="scrollToSection('initiatives')">探索项目</span>
-                    <span class="nav-btn" style="background:transparent; border:2px solid white; color:white;" onclick="showPage('about-detail-page')">了解更多</span>
-                </div>
+                <h1>让和平照亮世界</h1>
+                <p>我们致力于通过对话、援助和教育来终结战争。</p>
+                <span class="btn-hero" onclick="switchPage('page-join')">成为志愿者</span>
             </div>
-        </section>
+        </div>
 
-        <section id="initiatives" class="container">
-            <div class="section-title">
-                <h2>核心行动</h2>
-                <p>点击下方卡片查看详细报告与计划</p>
-            </div>
-            <div class="grid-3">
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1932&q=80" alt="Diplomacy">
+        <div class="container">
+            <h2 style="text-align:center; margin-top:50px; color:#0d47a1;">我们的行动</h2>
+            <div class="cards-grid">
+                <div class="card" onclick="switchPage('detail-diplomacy')">
+                    <img src="https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1932&q=80" alt="外交">
                     <div class="card-content">
                         <h3>外交调解</h3>
-                        <p>促成停火协议，建立信任机制。</p>
-                        <span class="btn-link" onclick="showPage('detail-diplomacy')">查看谈判报告 <i class="fas fa-arrow-right"></i></span>
+                        <p>促成冲突双方停火谈判。</p>
+                        <span class="link-text">阅读报告 &rarr;</span>
                     </div>
                 </div>
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Aid">
+
+                <div class="card" onclick="switchPage('detail-aid')">
+                    <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="援助">
                     <div class="card-content">
                         <h3>人道救援</h3>
-                        <p>为战区提供医疗与食物。</p>
-                        <span class="btn-link" onclick="showPage('detail-aid')">查看救援地图 <i class="fas fa-arrow-right"></i></span>
+                        <p>为战区平民提供食物与医疗。</p>
+                        <span class="link-text">查看地图 &rarr;</span>
                     </div>
                 </div>
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2073&q=80" alt="Education">
+
+                <div class="card" onclick="switchPage('detail-edu')">
+                    <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="教育">
                     <div class="card-content">
                         <h3>和平教育</h3>
-                        <p>在学校建立"和平俱乐部"。</p>
-                        <span class="btn-link" onclick="showPage('detail-education')">查看课程大纲 <i class="fas fa-arrow-right"></i></span>
+                        <p>培养下一代非暴力沟通能力。</p>
+                        <span class="link-text">课程大纲 &rarr;</span>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <section class="container" style="text-align: center; padding: 4rem 0;">
-            <div style="background: var(--primary); color: white; padding: 3rem; border-radius: 15px;">
-                <h2>准备好改变世界了吗？</h2>
-                <p style="margin: 1rem 0 2rem;">您的每一个行动都至关重要。</p>
-                <span class="nav-btn" style="background: white; color: var(--primary);" onclick="showPage('join-page')">成为志愿者</span>
-            </div>
-        </section>
-    </div>
-
-    <div id="donate-page" class="sub-page container">
-        <span class="back-btn" onclick="showPage('home-page')"><i class="fas fa-arrow-left"></i> 返回首页</span>
-        <div class="content-box" style="text-align: center;">
-            <i class="fas fa-hand-holding-heart" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
-            <h2 style="color: var(--secondary);">支持我们的和平事业</h2>
-            <p style="margin-bottom: 2rem;">您的捐款将直接用于购买医疗包、粮食和重建学校。</p>
-            
-            <div class="donation-options">
-                <div class="donation-btn" onclick="selectAmount(this)">$10</div>
-                <div class="donation-btn selected" onclick="selectAmount(this)">$50</div>
-                <div class="donation-btn" onclick="selectAmount(this)">$100</div>
-                <div class="donation-btn" onclick="selectAmount(this)">其他</div>
-            </div>
-
-            <form onsubmit="event.preventDefault(); alert('感谢您的慷慨捐赠！这将帮助很多人。'); showPage('home-page');">
-                <div class="form-group">
-                    <label>持卡人姓名</label>
-                    <input type="text" class="form-control" placeholder="Name on card" required>
-                </div>
-                <div class="form-group">
-                    <label>信用卡号</label>
-                    <input type="text" class="form-control" placeholder="XXXX XXXX XXXX XXXX" required>
-                </div>
-                <div style="display: flex; gap: 10px;">
-                    <div class="form-group" style="flex:1">
-                        <label>有效期</label>
-                        <input type="text" class="form-control" placeholder="MM/YY" required>
-                    </div>
-                    <div class="form-group" style="flex:1">
-                        <label>CVV</label>
-                        <input type="text" class="form-control" placeholder="123" required>
-                    </div>
-                </div>
-                <button type="submit" class="btn-submit">确认支付</button>
-            </form>
-            <p style="margin-top: 1rem; font-size: 0.8rem; color: gray;"><i class="fas fa-lock"></i> 支付安全由 SSL 加密保护</p>
         </div>
     </div>
 
-    <div id="about-detail-page" class="sub-page container">
-        <span class="back-btn" onclick="showPage('home-page')"><i class="fas fa-arrow-left"></i> 返回首页</span>
-        <div class="content-box">
-            <h1>Global Peace 简史</h1>
-            <p><strong>成立背景：</strong> 2010年，一群前外交官和人道主义工作者在日内瓦成立了 Global Peace，旨在填补官方外交与民间救援之间的空白。</p>
-            <br>
-            <img src="https://images.unsplash.com/photo-1529070538774-1843cb3265df?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" style="width:100%; border-radius:8px; margin-bottom:1rem;" alt="Team">
-            <br>
-            <h3>我们的里程碑</h3>
-            <ul style="margin-left: 20px; margin-top: 10px;">
-                <li>2012年：在叙利亚边境建立了第一个移动医疗诊所。</li>
-                <li>2015年：发起了“拒绝武器”全球倡议，收集了500万个签名。</li>
-                <li>2020年：我们的教育项目覆盖了非洲和中东的100所学校。</li>
-            </ul>
-        </div>
-    </div>
-
-    <div id="detail-diplomacy" class="sub-page container">
-        <span class="back-btn" onclick="showPage('home-page')"><i class="fas fa-arrow-left"></i> 返回首页</span>
-        <div class="page-header">
-            <h1><i class="fas fa-handshake"></i> 外交调解行动报告</h1>
-            <p>更新日期：2025年10月</p>
-        </div>
-        <div style="background: white; padding: 2rem; border-radius: 10px;">
-            <h3>最新进展：边境停火协议</h3>
-            <p>经过长达 6 个月的斡旋，我们成功促成了北部冲突地区的临时停火。双方同意开放一条人道主义走廊，允许平民撤离。</p>
-            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
-            <h3>调解数据</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
-                <div style="background: var(--light); padding: 15px; border-radius: 5px;">
-                    <strong>举行会谈：</strong> 45 场
-                </div>
-                <div style="background: var(--light); padding: 15px; border-radius: 5px;">
-                    <strong>签署文件：</strong> 3 份谅解备忘录
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="detail-aid" class="sub-page container">
-        <span class="back-btn" onclick="showPage('home-page')"><i class="fas fa-arrow-left"></i> 返回首页</span>
-        <div class="page-header">
-            <h1><i class="fas fa-first-aid"></i> 人道救援实时地图</h1>
-        </div>
-        <div class="content-box" style="max-width: 100%;">
-            <div style="background: #e0e0e0; height: 300px; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: #666;">
-                <i class="fas fa-map-marked-alt" style="font-size: 3rem; margin-right: 10px;"></i> [此处为交互式地图占位符]
-            </div>
-            <br>
-            <h3>当前急需物资</h3>
-            <ul style="list-style: none;">
-                <li style="padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">
-                    <span><i class="fas fa-tint" style="color: blue;"></i> 净水片</span>
-                    <span style="color: red;">缺口: 50,000 片</span>
-                </li>
-                <li style="padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">
-                    <span><i class="fas fa-box" style="color: brown;"></i> 食品包</span>
-                    <span style="color: orange;">缺口: 2,000 箱</span>
-                </li>
-                <li style="padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">
-                    <span><i class="fas fa-medkit" style="color: green;"></i> 创伤急救包</span>
-                    <span style="color: green;">已筹集 80%</span>
-                </li>
-            </ul>
-            <br>
-            <button class="btn-submit" onclick="showPage('donate-page')">捐赠物资资金</button>
-        </div>
-    </div>
-
-    <div id="detail-education" class="sub-page container">
-        <span class="back-btn" onclick="showPage('home-page')"><i class="fas fa-arrow-left"></i> 返回首页</span>
-        <div class="content-box">
-            <h1><i class="fas fa-book-reader"></i> 和平教育课程大纲</h1>
-            <p>我们的课程专为 8-15 岁儿童设计，旨在消除偏见。</p>
-            
-            <div style="margin-top: 2rem;">
-                <div style="margin-bottom: 1.5rem;">
-                    <h3 style="color: var(--primary);">第一单元：理解差异</h3>
-                    <p>学生通过角色扮演游戏，学习体验他人的文化和感受。</p>
-                </div>
-                <div style="margin-bottom: 1.5rem;">
-                    <h3 style="color: var(--primary);">第二单元：非暴力沟通</h3>
-                    <p>学习如何用语言化解冲突，而不是用拳头。</p>
-                </div>
-                <div style="margin-bottom: 1.5rem;">
-                    <h3 style="color: var(--primary);">第三单元：全球公民</h3>
-                    <p>理解我们在地球村中的责任。</p>
-                </div>
-            </div>
-            <button class="nav-btn" onclick="alert('课程PDF已发送至您的邮箱（模拟）')">下载完整 PDF</button>
-        </div>
-    </div>
-
-    <div id="join-page" class="sub-page container">
-        <span class="back-btn" onclick="showPage('home-page')"><i class="fas fa-arrow-left"></i> 返回首页</span>
-        <div class="content-box">
-            <h2 style="text-align: center; color: var(--secondary);">加入 Global Peace 网络</h2>
-            <p style="text-align: center; margin-bottom: 2rem;">注册成为会员，定期接收简报并参与本地活动。</p>
-            
-            <form onsubmit="event.preventDefault(); alert('欢迎加入！请查收您的欢迎邮件。'); showPage('home-page');">
-                <div class="form-group">
-                    <label>全名</label>
-                    <input type="text" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label>电子邮箱</label>
-                    <input type="email" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label>感兴趣的领域</label>
-                    <select class="form-control">
-                        <option>实地志愿服务</option>
-                        <option>在线宣传</option>
-                        <option>资金筹集</option>
-                        <option>翻译支持</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn-submit">提交申请</button>
-            </form>
-        </div>
-    </div>
-
-    <footer>
+    <div id="page-projects" class="page-section">
         <div class="container">
-            <h3>Global Peace</h3>
-            <p>拒绝战争，拥抱和平。</p>
-            <p style="font-size: 0.8rem; margin-top: 1rem; opacity: 0.7;">&copy; 2025 All Rights Reserved.</p>
+            <span class="back-btn" onclick="switchPage('page-home')">&larr; 返回首页</span>
+            <div class="content-box">
+                <h2>所有进行中的项目</h2>
+                <ul style="margin-top:20px; line-height:2;">
+                    <li><strong>叙利亚重建计划：</strong> 帮助 500 个家庭重建家园。 <span style="color:blue; cursor:pointer;" onclick="switchPage('detail-aid')">[查看详情]</span></li>
+                    <li><strong>边境停火协议：</strong> 正在进行的斡旋工作。 <span style="color:blue; cursor:pointer;" onclick="switchPage('detail-diplomacy')">[查看详情]</span></li>
+                    <li><strong>非洲水源净化：</strong> 为 100 个村庄提供净水片。</li>
+                    <li><strong>乌克兰心理援助：</strong> 为战后儿童提供心理咨询。</li>
+                </ul>
+            </div>
         </div>
-    </footer>
+    </div>
+
+    <div id="detail-diplomacy" class="page-section">
+        <div class="container">
+            <span class="back-btn" onclick="switchPage('page-home')">&larr; 返回首页</span>
+            <div class="content-box">
+                <h1 style="color:#0d47a1; margin-bottom:20px;">外交调解年度报告</h1>
+                <p><strong>日期：</strong> 2025年10月</p>
+                <hr style="margin:20px 0; border:0; border-top:1px solid #eee;">
+                <p>我们派遣了由前联合国官员组成的特别小组前往冲突前线。</p>
+                <br>
+                <h3>主要成果</h3>
+                <p>1. 成功建立了 3 条临时人道主义走廊。</p>
+                <p>2. 促成了双方交换 50 名战俘。</p>
+                <p>3. 签署了《关于保护平民设施的谅解备忘录》。</p>
+                <br>
+                <button class="btn-submit" onclick="alert('PDF 下载已开始（模拟）')">下载完整 PDF 报告</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="detail-aid" class="page-section">
+        <div class="container">
+            <span class="back-btn" onclick="switchPage('page-home')">&larr; 返回首页</span>
+            <div class="content-box">
+                <h1 style="color:#c62828; margin-bottom:20px;">紧急救援物资清单</h1>
+                <p>目前前线最紧缺的物资如下，您的捐赠将直接用于采购这些物品：</p>
+                <div style="background:#f9f9f9; padding:20px; border-radius:10px; margin:20px 0;">
+                    <ul style="list-style:none;">
+                        <li style="margin-bottom:10px;">🩹 <strong>创伤急救包：</strong> 缺口 2,000 套</li>
+                        <li style="margin-bottom:10px;">💊 <strong>抗生素：</strong> 缺口 5,000 盒</li>
+                        <li style="margin-bottom:10px;">🍞 <strong>压缩干粮：</strong> 缺口 10,000 份</li>
+                        <li>🧥 <strong>保暖毛毯：</strong> 缺口 3,000 条</li>
+                    </ul>
+                </div>
+                <button class="btn-submit" style="background:#c62828;" onclick="switchPage('page-donate')">我要捐赠物资资金</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="detail-edu" class="page-section">
+        <div class="container">
+            <span class="back-btn" onclick="switchPage('page-home')">&larr; 返回首页</span>
+            <div class="content-box">
+                <h1 style="color:#2e7d32; margin-bottom:20px;">和平课程大纲</h1>
+                <p>这是我们在全球 200 所学校推行的标准课程。</p>
+                <br>
+                <h3>第一课：什么是偏见？</h3>
+                <p>通过游戏让孩子们理解刻板印象的危害。</p>
+                <br>
+                <h3>第二课：倾听的力量</h3>
+                <p>学习如何在不打断对方的情况下理解对方的观点。</p>
+                <br>
+                <h3>第三课：共同的地球</h3>
+                <p>展示生态系统如何相互依存，强调人类命运共同体。</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-join" class="page-section">
+        <div class="container">
+            <span class="back-btn" onclick="switchPage('page-home')">&larr; 返回首页</span>
+            <div class="content-box">
+                <h2 style="text-align:center; margin-bottom:20px;">注册成为志愿者</h2>
+                <form onsubmit="event.preventDefault(); alert('提交成功！我们将尽快联系您。'); switchPage('page-home');">
+                    <div class="form-group">
+                        <label>姓名</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>邮箱</label>
+                        <input type="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>您所在的城市</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>技能 (如：医疗、翻译、驾驶)</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <button type="submit" class="btn-submit">提交申请</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-donate" class="page-section">
+        <div class="container">
+            <span class="back-btn" onclick="switchPage('page-home')">&larr; 返回首页</span>
+            <div class="content-box" style="text-align:center;">
+                <i class="fas fa-heart" style="font-size:3rem; color:#e91e63; margin-bottom:20px;"></i>
+                <h2>感谢您的慷慨解囊</h2>
+                <p>请选择捐赠金额</p>
+                
+                <div style="display:flex; gap:10px; justify-content:center; margin:30px 0;">
+                    <button style="padding:10px 20px; cursor:pointer;" onclick="alert('已选择 $10')">$10</button>
+                    <button style="padding:10px 20px; cursor:pointer; background:#ffca28; border:none;" onclick="alert('已选择 $50')">$50</button>
+                    <button style="padding:10px 20px; cursor:pointer;" onclick="alert('已选择 $100')">$100</button>
+                </div>
+
+                <form onsubmit="event.preventDefault(); alert('支付成功！感谢您为和平做出的贡献。'); switchPage('page-home');">
+                    <div class="form-group" style="text-align:left;">
+                        <label>卡号</label>
+                        <input type="text" class="form-control" placeholder="0000 0000 0000 0000" required>
+                    </div>
+                    <div style="display:flex; gap:10px;">
+                        <input type="text" class="form-control" placeholder="MM/YY" required>
+                        <input type="text" class="form-control" placeholder="CVC" required>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn-submit" style="background:#e91e63;">确认支付</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // 核心功能：页面切换
-        // 原理：将所有页面（div）默认隐藏，点击时隐藏当前页面，显示目标 ID 的页面
-        function showPage(pageId) {
-            // 1. 获取所有带有 'sub-page' 类的元素
-            const pages = document.querySelectorAll('.sub-page');
+        // 这个函数负责隐藏所有页面，只显示被点击的那个页面
+        function switchPage(pageId) {
+            // 1. 获取所有带有 'page-section' 类的 div
+            const pages = document.querySelectorAll('.page-section');
             
-            // 2. 隐藏所有页面
+            // 2. 遍历这些 div，把它们都隐藏起来 (display: none)
             pages.forEach(page => {
                 page.style.display = 'none';
             });
 
-            // 3. 显示目标页面
-            const targetPage = document.getElementById(pageId);
-            if (targetPage) {
-                targetPage.style.display = 'block';
-                // 每次切换页面都回到顶部
+            // 3. 找到我们要显示的那个 ID 的 div
+            const target = document.getElementById(pageId);
+            
+            // 4. 如果找到了，就把它显示出来 (display: block)，并滚回到顶部
+            if (target) {
+                target.style.display = 'block';
                 window.scrollTo(0, 0);
+            } else {
+                console.error("找不到页面ID: " + pageId); // 如果出错，控制台会提示
             }
-        }
-
-        // 功能：主页内部锚点滚动 (例如点击 "项目" 滑动到卡片区)
-        function scrollToSection(sectionId) {
-            // 先确保在主页
-            showPage('home-page');
-            // 等待页面渲染后滚动
-            setTimeout(() => {
-                const section = document.getElementById(sectionId);
-                if (section) {
-                    // 减去 header 高度
-                    const headerOffset = 80;
-                    const elementPosition = section.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: "smooth"
-                    });
-                }
-            }, 10);
-        }
-
-        // 功能：捐赠金额选择高亮
-        function selectAmount(btn) {
-            // 移除所有兄弟元素的 selected 类
-            const siblings = btn.parentNode.children;
-            for (let sibling of siblings) {
-                sibling.classList.remove('selected');
-            }
-            // 给自己添加 selected 类
-            btn.classList.add('selected');
         }
     </script>
+
 </body>
 </html>
