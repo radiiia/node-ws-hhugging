@@ -1,25 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Green Network - Protect Earth</title>
+    <title>Global Peace - 拒绝战争，拥抱和平</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', 'Microsoft YaHei', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         :root {
-            --primary: #2e7d32;
-            --secondary: #4caf50;
-            --accent: #8bc34a;
-            --light: #e8f5e9;
-            --dark: #1b5e20;
-            --text: #333333;
+            /* 修改为和平蓝配色方案 */
+            --primary: #1565c0;      /* 深天蓝 */
+            --secondary: #42a5f5;    /* 亮蓝 */
+            --accent: #ffca28;       /* 和平金/希望之光 */
+            --light: #f0f7ff;        /* 极浅蓝背景 */
+            --dark: #0d47a1;         /* 午夜蓝 */
+            --text: #37474f;         /* 深灰文字 */
             --white: #ffffff;
         }
 
@@ -61,6 +62,7 @@
 
         .logo i {
             font-size: 2rem;
+            color: var(--white);
         }
 
         nav ul {
@@ -101,7 +103,8 @@
         }
 
         .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2073&q=80');
+            /* 更有和平氛围的背景图 */
+            background: linear-gradient(rgba(13, 71, 161, 0.6), rgba(21, 101, 192, 0.5)), url('https://images.unsplash.com/photo-1596386461350-326ea7750f67?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
             background-size: cover;
             background-position: center;
             height: 80vh;
@@ -130,11 +133,11 @@
         .btn {
             display: inline-block;
             background-color: var(--accent);
-            color: var(--white);
+            color: var(--dark);
             padding: 0.8rem 2rem;
             border-radius: 50px;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 700;
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
@@ -142,7 +145,7 @@
         }
 
         .btn:hover {
-            background-color: var(--primary);
+            background-color: #ffb300;
             transform: translateY(-3px);
             box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
         }
@@ -250,6 +253,7 @@
 
         .stat-item p {
             color: var(--text);
+            font-weight: 500;
         }
 
         .initiatives {
@@ -331,7 +335,7 @@
 
         .cta .btn:hover {
             background-color: var(--accent);
-            color: var(--white);
+            color: var(--dark);
         }
 
         footer {
@@ -366,6 +370,7 @@
 
         .footer-column p {
             margin-bottom: 1rem;
+            font-size: 0.95rem;
         }
 
         .footer-links {
@@ -377,7 +382,7 @@
         }
 
         .footer-links li a {
-            color: var(--light);
+            color: #bbdefb;
             text-decoration: none;
             transition: all 0.3s ease;
         }
@@ -407,6 +412,7 @@
 
         .social-links a:hover {
             background-color: var(--accent);
+            color: var(--dark);
             transform: translateY(-5px);
         }
 
@@ -414,12 +420,14 @@
             text-align: center;
             padding-top: 2rem;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
         }
 
         .mobile-menu {
             display: none;
             font-size: 1.5rem;
             cursor: pointer;
+            color: var(--white);
         }
 
         @media (max-width: 992px) {
@@ -495,139 +503,133 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header>
         <div class="container nav-container">
             <div class="logo">
-                <i class="fas fa-seedling"></i>
-                <span>Green Network</span>
+                <i class="fas fa-dove"></i>
+                <span>Global Peace</span>
             </div>
             <nav>
                 <div class="mobile-menu">
                     <i class="fas fa-bars"></i>
                 </div>
                 <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#initiatives">Initiatives</a></li>
-                    <li><a href="#get-involved">Get Involved</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#home">首页</a></li>
+                    <li><a href="#about">关于我们</a></li>
+                    <li><a href="#initiatives">和平行动</a></li>
+                    <li><a href="#get-involved">加入我们</a></li>
+                    <li><a href="#contact">联系</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="container hero-content">
-            <h1>Protect Our Planet, Preserve Our Future</h1>
-            <p>Join the global movement to create a sustainable world through conservation, education, and community action.</p>
-            <a href="#get-involved" class="btn">Join Our Network</a>
+            <h1>停止战争，重建希望</h1>
+            <p>加入全球和平运动，通过对话、人道主义援助和团结，为下一代创造一个没有硝烟的世界。</p>
+            <a href="#get-involved" class="btn">签署和平宣言</a>
         </div>
     </section>
 
-    <!-- About Section -->
     <section id="about">
         <div class="container">
             <div class="section-title">
-                <h2>About Green Network</h2>
-                <p>We are a global community dedicated to environmental protection and sustainable development.</p>
+                <h2>关于 Global Peace</h2>
+                <p>我们是一个致力于解决冲突、促进理解和保护平民的全球性非营利组织。</p>
             </div>
             <div class="about-content">
                 <div class="about-img">
-                    <img src="https://images.unsplash.com/photo-1507591064344-4c6ce005b128?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Team planting trees">
+                    <img src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80" alt="人们手拉手团结一致">
                 </div>
                 <div class="about-text">
-                    <h3>Our Mission</h3>
-                    <p>Green Network is committed to creating a sustainable future by protecting natural ecosystems, promoting renewable energy, and empowering communities to take environmental action.</p>
-                    <p>Founded in 2010, we've grown from a small grassroots organization to an international network with over 50,000 members across 120 countries.</p>
-                    <p>Our approach combines scientific research, community engagement, and policy advocacy to address the most pressing environmental challenges of our time.</p>
-                    <a href="#" class="btn">Learn More</a>
+                    <h3>我们的使命</h3>
+                    <p>Global Peace 致力于在冲突地区架起沟通的桥梁。我们相信，武器无法带来持久的安宁，唯有对话、理解与合作才能化解仇恨。</p>
+                    <p>自 2010 年成立以来，我们已从一个小型的反战小组发展成为遍布 120 个国家的和平网络。我们呼吁裁军，并为战争受害者提供庇护。</p>
+                    <p>我们的工作结合了外交调解、难民援助和战后心理重建，力求治愈战争带来的创伤。</p>
+                    <a href="#" class="btn">了解更多历史</a>
                 </div>
             </div>
             <div class="stats">
                 <div class="stat-item">
-                    <i class="fas fa-tree"></i>
-                    <h3 class="counter" data-target="2500000">0</h3>
-                    <p>Trees Planted</p>
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <h3 class="counter" data-target="1500000">0</h3>
+                    <p>受助难民</p>
                 </div>
                 <div class="stat-item">
-                    <i class="fas fa-users"></i>
-                    <h3 class="counter" data-target="50000">0</h3>
-                    <p>Active Members</p>
+                    <i class="fas fa-user-shield"></i>
+                    <h3 class="counter" data-target="25000">0</h3>
+                    <p>和平志愿者</p>
                 </div>
                 <div class="stat-item">
-                    <i class="fas fa-globe-americas"></i>
-                    <h3 class="counter" data-target="120">0</h3>
-                    <p>Countries Reached</p>
+                    <i class="fas fa-flag"></i>
+                    <h3 class="counter" data-target="195">0</h3>
+                    <p>合作国家</p>
                 </div>
                 <div class="stat-item">
-                    <i class="fas fa-recycle"></i>
-                    <h3 class="counter" data-target="1500">0</h3>
-                    <p>Cleanup Projects</p>
+                    <i class="fas fa-file-signature"></i>
+                    <h3 class="counter" data-target="500">0</h3>
+                    <p>促成停火协议</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Initiatives Section -->
     <section class="initiatives" id="initiatives">
         <div class="container">
             <div class="section-title">
-                <h2>Our Initiatives</h2>
-                <p>Discover the key programs and projects we're implementing to protect our planet.</p>
+                <h2>核心倡议</h2>
+                <p>探索我们在全球范围内为制止暴力和促进和解所实施的关键项目。</p>
             </div>
             <div class="initiatives-grid">
                 <div class="initiative-card">
                     <div class="initiative-img">
-                        <img src="https://dialogue.earth/content/uploads/2021/04/lessons-from-the-rush-to-reforest-china-dialogue-2400x1599.jpg" alt="Reforestation">
+                        <img src="https://images.unsplash.com/photo-1544717297-fa95b6ee9643?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80" alt="Diplomacy">
                     </div>
                     <div class="initiative-content">
-                        <h3>Global Reforestation</h3>
-                        <p>Planting millions of trees worldwide to restore ecosystems, combat climate change, and protect biodiversity.</p>
-                        <a href="#" class="btn">Learn More</a>
+                        <h3>外交对话</h3>
+                        <p>促进冲突双方进行和平谈判，建立信任机制，替代军事对抗，寻找共赢的政治解决方案。</p>
+                        <a href="#" class="btn">查看详情</a>
                     </div>
                 </div>
                 <div class="initiative-card">
                     <div class="initiative-img">
-                        <img src="https://images.unsplash.com/photo-1621451537084-482c73073a0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" alt="Ocean Conservation">
+                        <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Humanitarian Aid">
                     </div>
                     <div class="initiative-content">
-                        <h3>Ocean Conservation</h3>
-                        <p>Protecting marine ecosystems, reducing plastic pollution, and promoting sustainable fishing practices.</p>
-                        <a href="#" class="btn">Learn More</a>
+                        <h3>人道主义救援</h3>
+                        <p>为战乱地区的平民提供紧急食品、医疗物资和临时住所，保护妇女和儿童免受战争伤害。</p>
+                        <a href="#" class="btn">查看详情</a>
                     </div>
                 </div>
                 <div class="initiative-card">
                     <div class="initiative-img">
-                        <img src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80" alt="Renewable Energy">
+                        <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Peace Education">
                     </div>
                     <div class="initiative-content">
-                        <h3>Renewable Energy</h3>
-                        <p>Promoting solar, wind, and other clean energy sources to reduce dependence on fossil fuels.</p>
-                        <a href="#" class="btn">Learn More</a>
+                        <h3>和平教育</h3>
+                        <p>在学校和社区推广非暴力沟通课程，消除偏见与仇恨的种子，培养新一代的和平缔造者。</p>
+                        <a href="#" class="btn">查看详情</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA Section -->
     <section class="cta" id="get-involved">
         <div class="container">
-            <h2>Join Our Global Movement</h2>
-            <p>Together, we can create a sustainable future for generations to come. Every action counts, no matter how small.</p>
-            <a href="#" class="btn">Become a Member</a>
+            <h2>你的声音至关重要</h2>
+            <p>和平不是旁观者的游戏。只要我们团结一致，就能迫使战争机器停下。今天就加入我们，为和平发声。</p>
+            <a href="#" class="btn">成为会员</a>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer id="contact">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
-                    <h3>Green Network</h3>
-                    <p>We are dedicated to protecting our planet through collaborative action, education, and sustainable solutions.</p>
+                    <h3>Global Peace</h3>
+                    <p>我们梦想一个没有战争、恐惧和暴力的世界。通过教育、倡导和行动，我们正在将这一梦想变为现实。</p>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
@@ -636,34 +638,34 @@
                     </div>
                 </div>
                 <div class="footer-column">
-                    <h3>Quick Links</h3>
+                    <h3>快速链接</h3>
                     <ul class="footer-links">
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#initiatives">Initiatives</a></li>
-                        <li><a href="#get-involved">Get Involved</a></li>
-                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#home">首页</a></li>
+                        <li><a href="#about">关于我们</a></li>
+                        <li><a href="#initiatives">核心倡议</a></li>
+                        <li><a href="#get-involved">加入我们</a></li>
+                        <li><a href="#contact">联系方式</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
-                    <h3>Our Programs</h3>
+                    <h3>我们的项目</h3>
                     <ul class="footer-links">
-                        <li><a href="#">Reforestation</a></li>
-                        <li><a href="#">Ocean Cleanup</a></li>
-                        <li><a href="#">Wildlife Protection</a></li>
-                        <li><a href="#">Climate Education</a></li>
-                        <li><a href="#">Sustainable Agriculture</a></li>
+                        <li><a href="#">冲突调解</a></li>
+                        <li><a href="#">难民支持</a></li>
+                        <li><a href="#">战后重建</a></li>
+                        <li><a href="#">反战宣传</a></li>
+                        <li><a href="#">医疗援助</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
-                    <h3>Contact Us</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> Copper Creek Drive, New York</p>
-                    <p><i class="fas fa-phone"></i> +1 (312) 171-0771</p>
-                    <p><i class="fas fa-envelope"></i> support@greennetwork.org</p>
+                    <h3>联系我们</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 瑞士日内瓦和平大道 101 号</p>
+                    <p><i class="fas fa-phone"></i> +41 22 123 4567</p>
+                    <p><i class="fas fa-envelope"></i> help@globalpeace.org</p>
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2025 Green Network. All rights reserved.</p>
+                <p>&copy; 2025 Global Peace Initiative. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -687,15 +689,31 @@
                 
                 if(count < target) {
                     counter.innerText = Math.ceil(count + inc);
-                    setTimeout(animateCounters, 1);
+                    setTimeout(animateCounters, 10); // 稍微调慢了刷新速度使其更平滑
                 } else {
-                    counter.innerText = target;
+                    counter.innerText = target.toLocaleString(); // 添加千位分隔符，看起来更专业
                 }
             });
         }
 
         // Initialize counters when page loads
-        window.addEventListener('load', animateCounters);
+        // 使用 Intersection Observer 来在元素进入视口时才触发动画，体验更好
+        let counted = false;
+        const section = document.querySelector('.stats');
+        
+        const observer = new IntersectionObserver((entries) => {
+            if(entries[0].isIntersecting && !counted) {
+                animateCounters();
+                counted = true;
+            }
+        });
+
+        if(section) {
+            observer.observe(section);
+        } else {
+            // Fallback if section not found immediately
+            window.addEventListener('load', animateCounters);
+        }
 
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -718,5 +736,4 @@
         });
     </script>
 </body>
-
 </html>
