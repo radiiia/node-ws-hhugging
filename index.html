@@ -6,88 +6,113 @@
     <title>Global Peace - 拒绝战争，拥抱和平</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* --- 基础重置 --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', 'Microsoft YaHei', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
         }
 
         :root {
-            /* 修改为和平蓝配色方案 */
-            --primary: #1565c0;      /* 深天蓝 */
-            --secondary: #42a5f5;    /* 亮蓝 */
-            --accent: #ffca28;       /* 和平金/希望之光 */
-            --light: #f0f7ff;        /* 极浅蓝背景 */
-            --dark: #0d47a1;         /* 午夜蓝 */
-            --text: #37474f;         /* 深灰文字 */
+            --primary: #1565c0;      /* 主蓝色 */
+            --secondary: #0d47a1;    /* 深蓝色 */
+            --accent: #ffca28;       /* 金色/高亮 */
+            --light: #f5f9ff;        /* 浅背景 */
             --white: #ffffff;
+            --text: #333333;
+            --gray: #666666;
+            --header-height: 80px;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
             background-color: var(--light);
             color: var(--text);
             line-height: 1.6;
+            overflow-x: hidden; /* 防止横向滚动条 */
         }
 
+        /* --- 导航栏样式 (核心修改区域) --- */
         header {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: var(--white);
-            padding: 1rem 0;
-            position: sticky;
+            background: rgba(21, 101, 192, 0.95); /* 初始带一点透明度 */
+            height: var(--header-height);
+            width: 100%;
+            position: fixed;
             top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: all 0.4s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* 滚动后的样式类 */
+        header.scrolled {
+            background: var(--secondary);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            height: 70px; /* 滚动后稍微变窄 */
         }
 
         .container {
             width: 90%;
             max-width: 1200px;
             margin: 0 auto;
+            height: 100%;
         }
 
         .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            height: 100%;
         }
 
         .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--white);
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 1.8rem;
-            font-weight: 700;
+            text-decoration: none;
+            z-index: 1001;
         }
 
         .logo i {
-            font-size: 2rem;
-            color: var(--white);
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-
-        nav ul li {
-            margin-left: 2rem;
-        }
-
-        nav ul li a {
-            color: var(--white);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            padding: 0.5rem 0;
-            position: relative;
-        }
-
-        nav ul li a:hover {
             color: var(--accent);
         }
 
-        nav ul li a::after {
+        /* 桌面端菜单 */
+        .desktop-nav {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            padding: 10px 0;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        /* 悬停和激活状态 */
+        .nav-link:hover, 
+        .nav-link.active {
+            color: var(--accent);
+        }
+
+        .nav-link::after {
             content: '';
             position: absolute;
             bottom: 0;
@@ -98,639 +123,497 @@
             transition: width 0.3s ease;
         }
 
-        nav ul li a:hover::after {
+        .nav-link:hover::after,
+        .nav-link.active::after {
             width: 100%;
         }
 
+        /* --- 下拉菜单 (Dropdown) --- */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--white);
+            width: 220px;
+            padding: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            list-style: none;
+        }
+
+        /* 小三角 */
+        .dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 6px solid var(--white);
+        }
+
+        /* 鼠标悬停显示下拉 */
+        .nav-item:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(10px);
+        }
+
+        .dropdown-item a {
+            display: block;
+            padding: 12px 20px;
+            color: var(--text);
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .dropdown-item a:hover {
+            background-color: var(--light);
+            color: var(--primary);
+            padding-left: 25px; /* 悬停右移效果 */
+        }
+
+        .dropdown-item i {
+            margin-right: 8px;
+            color: var(--secondary);
+            width: 20px;
+            text-align: center;
+        }
+
+        /* 导航栏按钮 */
+        .nav-btn {
+            background-color: var(--accent);
+            color: var(--secondary);
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn:hover {
+            background-color: #ffb300;
+            transform: translateY(-2px);
+            color: #000;
+        }
+
+        /* --- 移动端菜单按钮 --- */
+        .mobile-toggle {
+            display: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1002;
+        }
+
+        /* --- Hero Section --- */
         .hero {
-            /* 更有和平氛围的背景图 */
-            background: linear-gradient(rgba(13, 71, 161, 0.6), rgba(21, 101, 192, 0.5)), url('https://images.unsplash.com/photo-1596386461350-326ea7750f67?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            /* 使用更震撼的和平主题图片 */
+            background: linear-gradient(rgba(13, 71, 161, 0.7), rgba(21, 101, 192, 0.6)), url('https://images.unsplash.com/photo-1494751909833-28682a32507e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80');
             background-size: cover;
             background-position: center;
-            height: 80vh;
+            height: 100vh; /* 全屏高度 */
             display: flex;
             align-items: center;
             text-align: center;
             color: var(--white);
+            padding-top: var(--header-height);
         }
 
         .hero-content {
             max-width: 800px;
             margin: 0 auto;
+            animation: fadeIn Up 1s ease;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
         .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
+            font-size: 1.4rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
         }
 
-        .btn {
-            display: inline-block;
-            background-color: var(--accent);
-            color: var(--dark);
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 700;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        .hero-btns {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
         }
 
-        .btn:hover {
-            background-color: #ffb300;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-        }
-
+        /* --- 通用 Section --- */
         section {
-            padding: 5rem 0;
+            padding: 6rem 0;
         }
 
         .section-title {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
         }
 
         .section-title h2 {
             font-size: 2.5rem;
             color: var(--primary);
             margin-bottom: 1rem;
-            position: relative;
             display: inline-block;
+            position: relative;
         }
 
         .section-title h2::after {
             content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
+            display: block;
+            width: 60px;
             height: 4px;
-            background-color: var(--accent);
+            background: var(--accent);
+            margin: 10px auto 0;
             border-radius: 2px;
         }
 
-        .section-title p {
-            color: var(--text);
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-        }
-
-        .about-img {
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .about-img img {
-            width: 100%;
-            height: auto;
-            display: block;
-            transition: transform 0.5s ease;
-        }
-
-        .about-img:hover img {
-            transform: scale(1.05);
-        }
-
-        .about-text h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            color: var(--dark);
-        }
-
-        .about-text p {
-            margin-bottom: 1.5rem;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .stat-item {
-            text-align: center;
-            padding: 2rem 1rem;
-            background-color: var(--white);
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
-        }
-
-        .stat-item:hover {
-            transform: translateY(-10px);
-        }
-
-        .stat-item i {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        .stat-item h3 {
-            font-size: 2.5rem;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-item p {
-            color: var(--text);
-            font-weight: 500;
-        }
-
-        .initiatives {
-            background-color: var(--white);
-        }
-
-        .initiatives-grid {
+        /* --- 卡片样式 --- */
+        .grid-3 {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 2rem;
         }
 
-        .initiative-card {
-            background-color: var(--light);
-            border-radius: 10px;
+        .card {
+            background: var(--white);
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        .initiative-card:hover {
+        .card:hover {
             transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
         }
 
-        .initiative-img {
-            height: 200px;
-            overflow: hidden;
-        }
-
-        .initiative-img img {
+        .card img {
             width: 100%;
-            height: 100%;
+            height: 220px;
             object-fit: cover;
-            transition: transform 0.5s ease;
         }
 
-        .initiative-card:hover .initiative-img img {
-            transform: scale(1.1);
+        .card-content {
+            padding: 2rem;
         }
 
-        .initiative-content {
-            padding: 1.5rem;
-        }
-
-        .initiative-content h3 {
-            font-size: 1.5rem;
+        .card-content h3 {
+            color: var(--secondary);
             margin-bottom: 1rem;
-            color: var(--dark);
+            font-size: 1.4rem;
         }
 
-        .initiative-content p {
-            margin-bottom: 1.5rem;
-        }
-
-        .cta {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: var(--white);
-            text-align: center;
-            padding: 5rem 0;
-        }
-
-        .cta h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .cta p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .cta .btn {
-            background-color: var(--white);
+        .btn-link {
             color: var(--primary);
-        }
-
-        .cta .btn:hover {
-            background-color: var(--accent);
-            color: var(--dark);
-        }
-
-        footer {
-            background-color: var(--dark);
-            color: var(--white);
-            padding: 3rem 0 1rem;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .footer-column h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1.5rem;
-            position: relative;
-            padding-bottom: 10px;
-        }
-
-        .footer-column h3::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 40px;
-            height: 2px;
-            background-color: var(--accent);
-        }
-
-        .footer-column p {
-            margin-bottom: 1rem;
-            font-size: 0.95rem;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 0.8rem;
-        }
-
-        .footer-links li a {
-            color: #bbdefb;
             text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .footer-links li a:hover {
-            color: var(--accent);
-            padding-left: 5px;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .social-links a {
+            font-weight: 600;
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            color: var(--white);
-            text-decoration: none;
-            transition: all 0.3s ease;
+            gap: 5px;
+            margin-top: 1rem;
         }
 
-        .social-links a:hover {
-            background-color: var(--accent);
-            color: var(--dark);
-            transform: translateY(-5px);
+        .btn-link:hover {
+            gap: 10px; /* 箭头移动效果 */
         }
 
-        .copyright {
-            text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.9rem;
-        }
-
-        .mobile-menu {
-            display: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--white);
-        }
-
+        /* --- 响应式设计 --- */
         @media (max-width: 992px) {
-            .about-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .initiatives-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .footer-content {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .hero h1 { font-size: 3rem; }
+            .grid-3 { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
+            .mobile-toggle { display: block; }
             
-            .hero p {
-                font-size: 1.1rem;
-            }
-            
-            nav ul {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background-color: var(--primary);
+            /* 移动端侧滑菜单 */
+            .desktop-nav {
+                position: fixed;
+                top: 0;
+                right: -100%; /* 默认隐藏在右侧 */
+                width: 70%;
+                height: 100vh;
+                background: var(--white);
                 flex-direction: column;
-                padding: 1rem 0;
+                justify-content: center;
+                align-items: center;
+                transition: right 0.4s ease;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+                padding: 2rem;
+            }
+
+            .desktop-nav.active {
+                right: 0;
+            }
+
+            .nav-link {
+                color: var(--text); /* 移动端文字变黑 */
+                font-size: 1.2rem;
+                padding: 1rem;
+            }
+
+            .dropdown-menu {
+                position: static;
+                transform: none;
+                opacity: 1;
+                visibility: visible;
+                box-shadow: none;
+                background: var(--light);
+                width: 100%;
+                display: none; /* 默认折叠 */
                 text-align: center;
-                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
             }
             
-            nav ul.active {
-                display: flex;
-            }
-            
-            nav ul li {
-                margin: 0;
-                padding: 0.8rem 0;
-            }
-            
-            .mobile-menu {
+            /* 点击展开子菜单的类 */
+            .nav-item.mobile-active .dropdown-menu {
                 display: block;
             }
-            
-            .initiatives-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .stats {
-                grid-template-columns: 1fr;
-            }
+
+            .dropdown-menu::before { display: none; }
+
+            .hero h1 { font-size: 2.2rem; }
+            .grid-3 { grid-template-columns: 1fr; }
         }
 
-        /* Animation for stats counter */
-        .counter {
-            transition: all 0.5s ease;
+        /* Footer */
+        footer {
+            background: var(--secondary);
+            color: white;
+            padding: 4rem 0 2rem;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <header>
+
+    <header id="header">
         <div class="container nav-container">
-            <div class="logo">
+            <a href="#" class="logo">
                 <i class="fas fa-dove"></i>
-                <span>Global Peace</span>
+                Global Peace
+            </a>
+            
+            <div class="mobile-toggle" id="mobile-toggle">
+                <i class="fas fa-bars"></i>
             </div>
-            <nav>
-                <div class="mobile-menu">
-                    <i class="fas fa-bars"></i>
-                </div>
-                <ul>
-                    <li><a href="#home">首页</a></li>
-                    <li><a href="#about">关于我们</a></li>
-                    <li><a href="#initiatives">和平行动</a></li>
-                    <li><a href="#get-involved">加入我们</a></li>
-                    <li><a href="#contact">联系</a></li>
-                </ul>
-            </nav>
+
+            <ul class="desktop-nav" id="nav-menu">
+                <li class="nav-item">
+                    <a href="#home" class="nav-link active">首页</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#about" class="nav-link">关于我们</a>
+                </li>
+                <li class="nav-item dropdown-trigger">
+                    <a href="#initiatives" class="nav-link">
+                        核心倡议 <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 4px;"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item">
+                            <a href="#diplomacy"><i class="fas fa-handshake"></i> 外交调解</a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a href="#aid"><i class="fas fa-first-aid"></i> 人道救援</a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a href="#education"><i class="fas fa-book-open"></i> 和平教育</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#contact" class="nav-link">联系我们</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#join" class="nav-btn">立即捐赠</a>
+                </li>
+            </ul>
         </div>
     </header>
 
     <section class="hero" id="home">
         <div class="container hero-content">
-            <h1>停止战争，重建希望</h1>
-            <p>加入全球和平运动，通过对话、人道主义援助和团结，为下一代创造一个没有硝烟的世界。</p>
-            <a href="#get-involved" class="btn">签署和平宣言</a>
+            <h1>让和平的阳光<br>照亮每一个角落</h1>
+            <p>战争不是解决冲突的唯一途径。加入全球200万和平卫士，用爱与对话治愈世界。</p>
+            <div class="hero-btns">
+                <a href="#initiatives" class="btn" style="background:var(--accent); color:black; padding:1rem 2rem; border-radius:50px; text-decoration:none; font-weight:bold;">探索项目</a>
+                <a href="https://www.un.org/zh/global-issues/peace-and-security" target="_blank" class="btn" style="background:rgba(255,255,255,0.2); border:2px solid white; color:white; padding:1rem 2rem; border-radius:50px; text-decoration:none; font-weight:bold;">了解更多</a>
+            </div>
         </div>
     </section>
 
     <section id="about">
         <div class="container">
             <div class="section-title">
-                <h2>关于 Global Peace</h2>
-                <p>我们是一个致力于解决冲突、促进理解和保护平民的全球性非营利组织。</p>
+                <h2>我们的使命</h2>
+                <p>自2010年以来，我们一直致力于在战火纷飞的地区重建希望。</p>
             </div>
-            <div class="about-content">
-                <div class="about-img">
-                    <img src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80" alt="人们手拉手团结一致">
+            <div class="grid-3">
+                <div style="text-align:center; padding:2rem;">
+                    <i class="fas fa-shield-alt" style="font-size:3rem; color:var(--primary); margin-bottom:1rem;"></i>
+                    <h3>保护平民</h3>
+                    <p>为冲突区提供安全庇护所和法律援助。</p>
                 </div>
-                <div class="about-text">
-                    <h3>我们的使命</h3>
-                    <p>Global Peace 致力于在冲突地区架起沟通的桥梁。我们相信，武器无法带来持久的安宁，唯有对话、理解与合作才能化解仇恨。</p>
-                    <p>自 2010 年成立以来，我们已从一个小型的反战小组发展成为遍布 120 个国家的和平网络。我们呼吁裁军，并为战争受害者提供庇护。</p>
-                    <p>我们的工作结合了外交调解、难民援助和战后心理重建，力求治愈战争带来的创伤。</p>
-                    <a href="#" class="btn">了解更多历史</a>
+                <div style="text-align:center; padding:2rem;">
+                    <i class="fas fa-wheat" style="font-size:3rem; color:var(--primary); margin-bottom:1rem;"></i>
+                    <h3>消除饥饿</h3>
+                    <p>战争是饥饿的主因，我们运送必要的粮食。</p>
                 </div>
-            </div>
-            <div class="stats">
-                <div class="stat-item">
-                    <i class="fas fa-hand-holding-heart"></i>
-                    <h3 class="counter" data-target="1500000">0</h3>
-                    <p>受助难民</p>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-user-shield"></i>
-                    <h3 class="counter" data-target="25000">0</h3>
-                    <p>和平志愿者</p>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-flag"></i>
-                    <h3 class="counter" data-target="195">0</h3>
-                    <p>合作国家</p>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-file-signature"></i>
-                    <h3 class="counter" data-target="500">0</h3>
-                    <p>促成停火协议</p>
+                <div style="text-align:center; padding:2rem;">
+                    <i class="fas fa-comments" style="font-size:3rem; color:var(--primary); margin-bottom:1rem;"></i>
+                    <h3>促进对话</h3>
+                    <p>搭建敌对双方沟通的桥梁。</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="initiatives" id="initiatives">
+    <section id="initiatives" style="background: white;">
         <div class="container">
             <div class="section-title">
-                <h2>核心倡议</h2>
-                <p>探索我们在全球范围内为制止暴力和促进和解所实施的关键项目。</p>
+                <h2>全球行动</h2>
+                <p>我们正在这三个关键领域采取行动</p>
             </div>
-            <div class="initiatives-grid">
-                <div class="initiative-card">
-                    <div class="initiative-img">
-                        <img src="https://images.unsplash.com/photo-1544717297-fa95b6ee9643?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80" alt="Diplomacy">
-                    </div>
-                    <div class="initiative-content">
-                        <h3>外交对话</h3>
-                        <p>促进冲突双方进行和平谈判，建立信任机制，替代军事对抗，寻找共赢的政治解决方案。</p>
-                        <a href="#" class="btn">查看详情</a>
-                    </div>
-                </div>
-                <div class="initiative-card">
-                    <div class="initiative-img">
-                        <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Humanitarian Aid">
-                    </div>
-                    <div class="initiative-content">
-                        <h3>人道主义救援</h3>
-                        <p>为战乱地区的平民提供紧急食品、医疗物资和临时住所，保护妇女和儿童免受战争伤害。</p>
-                        <a href="#" class="btn">查看详情</a>
+            
+            <div class="grid-3">
+                <div class="card" id="diplomacy">
+                    <img src="https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1932&q=80" alt="Diplomacy">
+                    <div class="card-content">
+                        <h3>外交调解</h3>
+                        <p>派遣专业谈判团队前往冲突前线，促成停火协议。</p>
+                        <a href="#" class="btn-link">查看报告 <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
-                <div class="initiative-card">
-                    <div class="initiative-img">
-                        <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Peace Education">
+
+                <div class="card" id="aid">
+                    <img src="https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Aid">
+                    <div class="card-content">
+                        <h3>人道救援</h3>
+                        <p>紧急医疗包和净水设施的投放，挽救了数万生命。</p>
+                        <a href="#" class="btn-link">查看地图 <i class="fas fa-arrow-right"></i></a>
                     </div>
-                    <div class="initiative-content">
+                </div>
+
+                <div class="card" id="education">
+                    <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2073&q=80" alt="Education">
+                    <div class="card-content">
                         <h3>和平教育</h3>
-                        <p>在学校和社区推广非暴力沟通课程，消除偏见与仇恨的种子，培养新一代的和平缔造者。</p>
-                        <a href="#" class="btn">查看详情</a>
+                        <p>在学校建立"和平俱乐部"，教导孩子理解而非仇恨。</p>
+                        <a href="#" class="btn-link">课程大纲 <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="cta" id="get-involved">
-        <div class="container">
-            <h2>你的声音至关重要</h2>
-            <p>和平不是旁观者的游戏。只要我们团结一致，就能迫使战争机器停下。今天就加入我们，为和平发声。</p>
-            <a href="#" class="btn">成为会员</a>
+    <section id="contact" style="background: var(--light);">
+        <div class="container" style="text-align: center; max-width: 600px;">
+            <i class="fas fa-paper-plane" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+            <h2>订阅我们的和平周刊</h2>
+            <p style="margin-bottom: 2rem;">获取最新的前线报道和志愿者机会。</p>
+            <div style="display: flex; gap: 10px;">
+                <input type="email" placeholder="输入您的邮箱地址" style="flex: 1; padding: 1rem; border: 1px solid #ddd; border-radius: 5px;">
+                <button style="background: var(--primary); color: white; border: none; padding: 0 2rem; border-radius: 5px; cursor: pointer;">订阅</button>
+            </div>
         </div>
     </section>
 
-    <footer id="contact">
+    <footer>
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>Global Peace</h3>
-                    <p>我们梦想一个没有战争、恐惧和暴力的世界。通过教育、倡导和行动，我们正在将这一梦想变为现实。</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="footer-column">
-                    <h3>快速链接</h3>
-                    <ul class="footer-links">
-                        <li><a href="#home">首页</a></li>
-                        <li><a href="#about">关于我们</a></li>
-                        <li><a href="#initiatives">核心倡议</a></li>
-                        <li><a href="#get-involved">加入我们</a></li>
-                        <li><a href="#contact">联系方式</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>我们的项目</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">冲突调解</a></li>
-                        <li><a href="#">难民支持</a></li>
-                        <li><a href="#">战后重建</a></li>
-                        <li><a href="#">反战宣传</a></li>
-                        <li><a href="#">医疗援助</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>联系我们</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> 瑞士日内瓦和平大道 101 号</p>
-                    <p><i class="fas fa-phone"></i> +41 22 123 4567</p>
-                    <p><i class="fas fa-envelope"></i> help@globalpeace.org</p>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>&copy; 2025 Global Peace Initiative. All rights reserved.</p>
+            <h3>Global Peace</h3>
+            <p>&copy; 2025 All Rights Reserved. Designed for Peace.</p>
+            <div style="margin-top: 1rem; font-size: 1.5rem;">
+                <i class="fab fa-twitter" style="margin: 0 10px;"></i>
+                <i class="fab fa-facebook" style="margin: 0 10px;"></i>
+                <i class="fab fa-instagram" style="margin: 0 10px;"></i>
             </div>
         </div>
     </footer>
 
     <script>
-        // Mobile Menu Toggle
-        document.querySelector('.mobile-menu').addEventListener('click', function() {
-            document.querySelector('nav ul').classList.toggle('active');
-        });
-
-        // Counter Animation
-        function animateCounters() {
-            const counters = document.querySelectorAll('.counter');
-            const speed = 200; // The lower the slower
-            
-            counters.forEach(counter => {
-                const target = +counter.getAttribute('data-target');
-                const count = +counter.innerText;
-                
-                const inc = target / speed;
-                
-                if(count < target) {
-                    counter.innerText = Math.ceil(count + inc);
-                    setTimeout(animateCounters, 10); // 稍微调慢了刷新速度使其更平滑
-                } else {
-                    counter.innerText = target.toLocaleString(); // 添加千位分隔符，看起来更专业
-                }
-            });
-        }
-
-        // Initialize counters when page loads
-        // 使用 Intersection Observer 来在元素进入视口时才触发动画，体验更好
-        let counted = false;
-        const section = document.querySelector('.stats');
-        
-        const observer = new IntersectionObserver((entries) => {
-            if(entries[0].isIntersecting && !counted) {
-                animateCounters();
-                counted = true;
+        // 1. 导航栏吸顶变色效果
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
             }
         });
 
-        if(section) {
-            observer.observe(section);
-        } else {
-            // Fallback if section not found immediately
-            window.addEventListener('load', animateCounters);
-        }
+        // 2. 移动端菜单切换
+        const mobileToggle = document.getElementById('mobile-toggle');
+        const navMenu = document.getElementById('nav-menu');
+        const icon = mobileToggle.querySelector('i');
 
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if(targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if(targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                    
-                    document.querySelector('nav ul').classList.remove('active');
+        mobileToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            // 切换图标
+            if (navMenu.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+                icon.style.color = 'var(--text)'; // 菜单打开时图标变深色
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+                icon.style.color = 'var(--white)';
+            }
+        });
+
+        // 3. 移动端下拉菜单点击交互
+        const dropdownTrigger = document.querySelector('.dropdown-trigger');
+        dropdownTrigger.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) {
+                // 如果是移动端，点击触发展开，阻止跳转
+                // e.preventDefault(); 
+                dropdownTrigger.classList.toggle('mobile-active');
+            }
+        });
+
+        // 4. 滚动监听 (Scroll Spy) - 让菜单根据页面位置自动高亮
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                // 减去 header 高度做偏移
+                if (pageYOffset >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // 5. 点击链接后自动关闭移动端菜单
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    navMenu.classList.remove('active');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                    icon.style.color = 'var(--white)';
                 }
             });
         });
